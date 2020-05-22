@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {{ form(form) }}
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
