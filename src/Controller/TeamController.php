@@ -17,14 +17,12 @@ class TeamController extends AbstractController
     /**
      * @Route("/team", name="team")
      * @param Request $request
-     * @param User $user
      * @return Response
      */
-    public function index(Request $request, User $user)
+    public function index(Request $request)
     {
         $form = $this->createForm(CreateTeamForm::class);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $team = new Team();

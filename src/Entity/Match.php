@@ -40,6 +40,11 @@ class Match
      */
     private $tie;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="matches")
+     */
+    private $tournament;
+
 
     public function __construct()
     {
@@ -109,6 +114,18 @@ class Match
     public function setTie(?bool $tie): self
     {
         $this->tie = $tie;
+
+        return $this;
+    }
+
+    public function getTournament(): ?Tournament
+    {
+        return $this->tournament;
+    }
+
+    public function setTournament(?Tournament $tournament): self
+    {
+        $this->tournament = $tournament;
 
         return $this;
     }

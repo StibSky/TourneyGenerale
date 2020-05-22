@@ -3,4 +3,7 @@
 {% block title %}Hello HomePageController!{% endblock %}
 
 {% block body %}
+    {% for tournament in tournaments %}
+        {{ tournament.name }}<br>
+    {% endfor %}
 {% endblock %}
