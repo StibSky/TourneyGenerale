@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TeamController!{% endblock %}
+{% block title %}Hello TeamHomepageController!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,9 +9,11 @@
 </style>
 
 <div class="example-wrapper">
-
-    <h1>Make your team!</h1>
-
-    {{ form(form) }}
+    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% for user in users %}
+        <p>
+            {{ user.username }}
+        </p>
+    {% endfor %}
 </div>
 {% endblock %}
