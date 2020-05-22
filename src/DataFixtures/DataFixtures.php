@@ -33,7 +33,7 @@ class DataFixtures extends Fixture
         $user2->setTeam($team2);
 
         $team->setTeamName("matteam");
-        $team2->setTeamName("taloes");
+        $team2->setTeamName("taloesteam");
 
 
         $match->setLoser($team);
