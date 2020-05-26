@@ -37,6 +37,8 @@ class Tournament
     public function __construct()
     {
         $this->matches = new ArrayCollection();
+        $matchTracker = new MatchTracker();
+        //$allteams = getDoctrine()->getRepository(Team::class)->findAll();
     }
 
     public function getId(): ?int
