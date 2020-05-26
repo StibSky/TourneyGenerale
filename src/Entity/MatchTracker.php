@@ -20,7 +20,7 @@ class MatchTracker
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=team::class, inversedBy="hometeamMatches")
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="hometeamMatches")
      * @ORM\JoinColumn(nullable=false)
      */
     private $homeTeam;
@@ -54,12 +54,12 @@ class MatchTracker
         return $this->id;
     }
 
-    public function getHomeTeam(): ?team
+    public function getHomeTeam(): ?Team
     {
         return $this->homeTeam;
     }
 
-    public function setHomeTeam(?team $homeTeam): self
+    public function setHomeTeam(?Team $homeTeam): self
     {
         $this->homeTeam = $homeTeam;
 
