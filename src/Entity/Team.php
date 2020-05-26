@@ -44,6 +44,11 @@ class Team
      */
     private $matchesLost;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MatchTracker::class, mappedBy="homeTeams")
+     */
+    private $hometeamMatches;
+
 
     public function __construct()
     {
@@ -51,6 +56,7 @@ class Team
         $this->matches = new ArrayCollection();
         $this->matchesWon = new ArrayCollection();
         $this->matchesLost = new ArrayCollection();
+        $this->hometeamMatches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,6 +191,37 @@ class Team
             // set the owning side to null (unless already changed)
             if ($matchesLost->getLoser() === $this) {
                 $matchesLost->setLoser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MatchTracker[]
+     */
+    public function getHometeamMatches(): Collection
+    {
+        return $this->hometeamMatches;
+    }
+
+    public function addHometeamMatch(MatchTracker $hometeamMatch): self
+    {
+        if (!$this->hometeamMatches->contains($hometeamMatch)) {
+            $this->hometeamMatches[] = $hometeamMatch;
+            $hometeamMatch->setHomeTeams($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHometeamMatch(MatchTracker $hometeamMatch): self
+    {
+        if ($this->hometeamMatches->contains($hometeamMatch)) {
+            $this->hometeamMatches->removeElement($hometeamMatch);
+            // set the owning side to null (unless already changed)
+            if ($hometeamMatch->getHomeTeams() === $this) {
+                $hometeamMatch->setHomeTeams(null);
             }
         }
 
