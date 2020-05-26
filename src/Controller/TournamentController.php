@@ -52,19 +52,22 @@ class TournamentController extends AbstractController
 
         function roundRobin($allteams, $entityManager)
         {
+            if (count($allteams)%2 != 0){
+                $fakeTeam = new Team();
+                $fakeTeam->setTeamName("FakeTeam");
+                array_push($allteams, $fakeTeam);
+                $entityManager->persist($fakeTeam);
+            }
+
             $away = array_splice($allteams,(count($allteams)/2));
             $home = $allteams;
-
-            if (count($allteams)%2 != 0){
-                array_push($allteams, new Team());
-            }
 
             for ($i=0; $i < count($home)+count($away)-1; $i++){
                 for ($j=0; $j<count($home); $j++){
                     $newMatchTracker = new MatchTracker();
                     $newMatchTracker->setAwayTeam($away[$j]);
                     $newMatchTracker->setHomeTeam($home[$j]);
-                    $newMatchTracker->setIsMatchPlayed("false");
+                    $newMatchTracker->setIsMatchPlayed(0);
                     $entityManager->persist($newMatchTracker);
                 }
                 if(count($home)+count($away)-1 > 2){
