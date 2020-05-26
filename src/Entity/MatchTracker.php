@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\MatchTrackerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @ORM\Entity(repositoryClass=MatchTrackerRepository::class)
@@ -21,7 +23,7 @@ class MatchTracker
      * @ORM\ManyToOne(targetEntity=team::class, inversedBy="hometeamMatches")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $homeTeams;
+    private $homeTeam;
 
     /**
      * @ORM\ManyToOne(targetEntity=Team::class)
@@ -34,9 +36,17 @@ class MatchTracker
      */
     private $IsMatchPlayed;
 
+/*    protected function getDoctrine(): ManagerRegistry
+    {
+        if (!$this->container->has('doctrine')) {
+            throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
+        }
+
+        return $this->container->get('doctrine');
+    }*/
+
     public function __construct()
     {
-
     }
 
     public function getId(): ?int
@@ -44,14 +54,14 @@ class MatchTracker
         return $this->id;
     }
 
-    public function getHomeTeams(): ?team
+    public function getHomeTeam(): ?team
     {
-        return $this->homeTeams;
+        return $this->homeTeam;
     }
 
-    public function setHomeTeams(?team $homeTeams): self
+    public function setHomeTeam(?team $homeTeam): self
     {
-        $this->homeTeams = $homeTeams;
+        $this->homeTeam = $homeTeam;
 
         return $this;
     }

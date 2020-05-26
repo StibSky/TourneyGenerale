@@ -209,7 +209,7 @@ class Team
     {
         if (!$this->hometeamMatches->contains($hometeamMatch)) {
             $this->hometeamMatches[] = $hometeamMatch;
-            $hometeamMatch->setHomeTeams($this);
+            $hometeamMatch->setHomeTeam($this);
         }
 
         return $this;
@@ -220,8 +220,8 @@ class Team
         if ($this->hometeamMatches->contains($hometeamMatch)) {
             $this->hometeamMatches->removeElement($hometeamMatch);
             // set the owning side to null (unless already changed)
-            if ($hometeamMatch->getHomeTeams() === $this) {
-                $hometeamMatch->setHomeTeams(null);
+            if ($hometeamMatch->getHomeTeam() === $this) {
+                $hometeamMatch->setHomeTeam(null);
             }
         }
 
