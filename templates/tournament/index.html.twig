@@ -12,7 +12,6 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Hello {{ controller_name }}! ✅</h1>
 
         <article>
             <form action={{ path('roundRobin') }}>
@@ -37,7 +36,7 @@
                         </td>
                         <td>
                             <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
-                                <button name="winner" value="tie">This match was a tie</button>
+                                <button name="tie" value="tie">This match was a tie</button>
                             </form>
                         </td>
                     </tr>

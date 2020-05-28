@@ -18,28 +18,45 @@ class WinnerController extends AbstractController
      */
     public function index(MatchTracker $MatchTracker)
     {
-        $winnerTeam = $_POST['winner'];
-        $winningTeam = $this->getDoctrine()->getRepository(Team::class)
-            ->findOneBy(['teamName' => $winnerTeam]);
+        $em = $this->getDoctrine()->getManager();
+        $POINTSPERWIN = 3;
+        $POINTSPERLOSE = 0;
+        $POINTSPERTIE = 1;
         $playedMatch = new Match();
-        $playedMatch->setWinner($winningTeam);
+
+        $winnerTeam = $_POST['winner'] ?? "tie";
+        if (!$_POST['tie']){
+            $winningTeam = $this->getDoctrine()->getRepository(Team::class)
+                ->findOneBy(['teamName' => $winnerTeam]);
+            $playedMatch->setWinner($winningTeam);
+            $winningTeam->setScore($winningTeam->getScore() + $POINTSPERWIN);
+            $em->persist($winningTeam);
+        }
+
         if ($winnerTeam == "tie") {
             $playedMatch->setTie(true);
+            $MatchTracker->getAwayTeam()->setScore($MatchTracker->getAwayTeam()->getScore() + $POINTSPERTIE);
+            $MatchTracker->getHomeTeam()->setScore($MatchTracker->getHomeTeam()->getScore() + $POINTSPERTIE);
+            $em->persist($MatchTracker->getAwayTeam());
+            $em->persist($MatchTracker->getHomeTeam());
+
+
 
         } elseif ($MatchTracker->getHomeTeam()->getTeamName() == $winnerTeam) {
             $losingTeam = $this->getDoctrine()->getRepository(Team::class)
                 ->findOneBy(['teamName' => $MatchTracker->getAwayTeam()->getTeamName()]);
             $playedMatch->setLoser($losingTeam);
+            $em->persist($losingTeam);
 
         } else {
             $losingTeam = $this->getDoctrine()->getRepository(Team::class)
                 ->findOneBy(['teamName' => $MatchTracker->getHomeTeam()->getTeamName()]);
             $playedMatch->setLoser($losingTeam);
+            $em->persist($losingTeam);
         }
 
         $MatchTracker->setIsMatchPlayed(true);
         //TODO: find way to identify loser
-        $em = $this->getDoctrine()->getManager();
         $em->persist($playedMatch);
         $em->flush();
         return $this->redirectToRoute('tournament');

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RankingController!{% endblock %}
+
+{% block body %}
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+    </style>
+
+    <div>
+        <table>
+            <th>Team Name</th>
+            <th>Points</th>
+            {% for team in sortedArray %}
+                <tr>
+                    <td>
+                    {{ team.name }}
+                    </td>
+                    <td>
+                    {{ team.score }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

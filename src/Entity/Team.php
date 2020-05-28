@@ -49,6 +49,11 @@ class Team
      */
     private $hometeamMatches;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $score = 0;
+
 
     public function __construct()
     {
@@ -229,6 +234,18 @@ class Team
                 $hometeamMatch->setHomeTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
 
         return $this;
     }
