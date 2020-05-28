@@ -37,7 +37,7 @@ class WinnerController extends AbstractController
             $playedMatch->setLoser($losingTeam);
         }
 
-
+        $MatchTracker->setIsMatchPlayed(true);
         //TODO: find way to identify loser
         $em = $this->getDoctrine()->getManager();
         $em->persist($playedMatch);
