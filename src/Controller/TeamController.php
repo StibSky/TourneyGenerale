@@ -33,6 +33,7 @@ class TeamController extends AbstractController
             $entityManager->persist($team);
             $entityManager->persist($user);
             $entityManager->flush();
+
             return $this->redirectToRoute("team_homepage");
         }
 

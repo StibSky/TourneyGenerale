@@ -18,6 +18,9 @@ class TournamentController extends AbstractController
     {
         $allteams = $this->getDoctrine()->getRepository(Team::class)->findAll();
         $numberOfMatchesInRound = count($allteams)/2;
+        foreach ($allteams as $team)  {
+            $team->getId();
+        }
 
         return $this->render('tournament/index.html.twig', [
             'controller_name' => 'TournamentController',
