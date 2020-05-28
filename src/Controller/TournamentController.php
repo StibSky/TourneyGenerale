@@ -32,7 +32,6 @@ class TournamentController extends AbstractController
 
     public function roundRobin()
     {
-        var_dump($this->getDoctrine()->getRepository(MatchTracker::class)->findAll());
         //so this is our problem
 
         if(count($this->getDoctrine()->getRepository(MatchTracker::class)->findAll()) !== 0){
