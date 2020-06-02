@@ -90,7 +90,7 @@ class Match
     public function setWinner(?Team $winner): self
     {
         $this->winner = $winner;
-
+        $this->winner->setScore($this->winner->getScore()+3);
         return $this;
     }
 
@@ -102,7 +102,7 @@ class Match
     public function setLoser(?Team $loser): self
     {
         $this->loser = $loser;
-
+        $this->loser->setScore($this->loser->getScore()+0);
         return $this;
     }
 
@@ -111,12 +111,14 @@ class Match
         return $this->tie;
     }
 
-    public function setTie(?bool $tie): self
+    public function setTie(?bool $tie, MatchTracker $matchTracker): self
     {
         $this->tie = $tie;
-
+        $matchTracker->getHomeTeam()->setScore($matchTracker->getHomeTeam()->getScore()+1);
+        $matchTracker->getAwayTeam()->setScore($matchTracker->getAwayTeam()->getScore()+1);
         return $this;
     }
+
 
     public function getTournament(): ?Tournament
     {

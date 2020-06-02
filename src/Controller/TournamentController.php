@@ -6,6 +6,7 @@ use App\Entity\Match;
 use App\Entity\MatchTracker;
 use App\Entity\Team;
 use App\Entity\Tournament;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,6 +15,7 @@ class TournamentController extends AbstractController
     /**
      * @Route("/tournament", name="tournament")
      */
+
 
     public function index()
     {
@@ -58,6 +60,7 @@ class TournamentController extends AbstractController
 
         $away = array_splice($allteams,(count($allteams)/2));
         $home = $allteams;
+
 
         for ($i=0; $i < count($home)+count($away)-1; $i++){
             for ($j=0; $j<count($home); $j++){
