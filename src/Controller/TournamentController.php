@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Match;
 use App\Entity\MatchTracker;
 use App\Entity\Team;
 use App\Entity\Tournament;
@@ -46,8 +47,6 @@ class TournamentController extends AbstractController
 
         $allteams = $this->getDoctrine()->getRepository(Team::class)->findAll();
         $matchTracker = new MatchTracker();
-        $hometeam = $matchTracker->getHomeTeam();
-        $awayteam = $matchTracker->getAwayTeam();
         $entityManager = $this->getDoctrine()->getManager();
 
         if (count($allteams)%2 != 0){
@@ -65,7 +64,21 @@ class TournamentController extends AbstractController
                 $newMatchTracker = new MatchTracker();
                 $newMatchTracker->setAwayTeam($away[$j]);
                 $newMatchTracker->setHomeTeam($home[$j]);
-                $newMatchTracker->setIsMatchPlayed(0);
+                if ($newMatchTracker->getAwayTeam()->getTeamName() == "You have a bye") {
+                   $match = new Match();
+                   $match->setWinner($newMatchTracker->getHomeTeam());
+                   $newMatchTracker->setIsMatchPlayed(1);
+                   $entityManager->persist($match);
+                   $entityManager->flush();
+                } elseif($newMatchTracker->getHomeTeam()->getTeamName() == "You have a bye") {
+                    $match = new Match();
+                    $match->setWinner($newMatchTracker->getAwayTeam());
+                    $newMatchTracker->setIsMatchPlayed(1);
+                    $entityManager->persist($match);
+                    $entityManager->flush();
+                } else {
+                    $newMatchTracker->setIsMatchPlayed(0);
+                }
                 $entityManager->persist($newMatchTracker);
             }
             if(count($home)+count($away)-1 > 2){
