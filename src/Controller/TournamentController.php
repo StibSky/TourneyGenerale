@@ -65,6 +65,7 @@ class TournamentController extends AbstractController
         for ($i=0; $i < count($home)+count($away)-1; $i++){
             for ($j=0; $j<count($home); $j++){
                 $newMatchTracker = new MatchTracker();
+                $newMatchTracker->setRound(0);
                 $newMatchTracker->setAwayTeam($away[$j]);
                 $newMatchTracker->setHomeTeam($home[$j]);
                 if ($newMatchTracker->getAwayTeam()->getTeamName() == "You have a bye") {

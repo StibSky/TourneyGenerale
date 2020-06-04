@@ -21,6 +21,7 @@ class DataFixtures extends Fixture
         $match = new Match();
         $tournament = new Tournament();
         $matchTracker = new MatchTracker();
+        $matchTracker->setRound(0);
         $matchTracker->setAwayTeam($team);
         $matchTracker->setHomeTeam($team2);
 

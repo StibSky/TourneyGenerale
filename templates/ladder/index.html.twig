@@ -9,8 +9,8 @@
         {% for Team in topTeams %}
             {{ Team.teamName }} : {{ Team.score }} <br>
         {% endfor %}
-        {% for team in firstHalf %}
-            <p>{{team.teamname}} vs {{ secondHalf[loop.index0].teamName }}</p>
+        {% for match in bracket %}
+            <p>{{ match.homeTeam.teamName }} vs {{ match.awayTeam.teamName }}</p>
         {% endfor %}
 
     </div>

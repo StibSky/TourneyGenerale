@@ -36,6 +36,11 @@ class MatchTracker
      */
     private $IsMatchPlayed;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $round;
+
 /*    protected function getDoctrine(): ManagerRegistry
     {
         if (!$this->container->has('doctrine')) {
@@ -86,6 +91,18 @@ class MatchTracker
     public function setIsMatchPlayed(bool $IsMatchPlayed): self
     {
         $this->IsMatchPlayed = $IsMatchPlayed;
+
+        return $this;
+    }
+
+    public function getRound(): ?int
+    {
+        return $this->round;
+    }
+
+    public function setRound(int $round): self
+    {
+        $this->round = $round;
 
         return $this;
     }
