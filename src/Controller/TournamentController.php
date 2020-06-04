@@ -75,13 +75,11 @@ class TournamentController extends AbstractController
                    $match->setWinner($newMatchTracker->getHomeTeam());
                    $newMatchTracker->setIsMatchPlayed(1);
                    $entityManager->persist($match);
-                   $entityManager->flush();
                 } elseif($newMatchTracker->getHomeTeam()->getTeamName() == "You have a bye") {
                     $match = new Match();
                     $match->setWinner($newMatchTracker->getAwayTeam());
                     $newMatchTracker->setIsMatchPlayed(1);
                     $entityManager->persist($match);
-                    $entityManager->flush();
                 } else {
                     $newMatchTracker->setIsMatchPlayed(0);
                 }

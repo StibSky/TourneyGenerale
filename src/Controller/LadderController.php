@@ -14,6 +14,7 @@ class LadderController extends AbstractController
 
     public function index()
     {
+        //TODO can be array
         $CUT64 = 64;
         $CUT32 = 32;
         $CUT16 = 16;
