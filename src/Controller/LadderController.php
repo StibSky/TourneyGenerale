@@ -51,11 +51,19 @@ class LadderController extends AbstractController
                 break;
         }
 
+        $bracketArray = $topArray;
+
+        $firstHalfBracket = array_splice($bracketArray, (count($topArray)/2));
+        $secondHalfBracket = $bracketArray;
+        shuffle($firstHalfBracket);
+        shuffle($secondHalfBracket);
+
 
         return $this->render('ladder/index.html.twig', [
-            'controller_name' => 'LadderController',
             'ladder' => $ladder,
             'topTeams' => array_reverse($topArray),
+            'firstHalf' => $firstHalfBracket,
+            'secondHalf' => $secondHalfBracket,
         ]);
     }
 }

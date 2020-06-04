@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Match;
+use App\Entity\MatchTracker;
 use App\Entity\Team;
 use App\Entity\Tournament;
 use App\Entity\User;
@@ -19,6 +20,10 @@ class DataFixtures extends Fixture
         $team2 = new Team();
         $match = new Match();
         $tournament = new Tournament();
+        $matchTracker = new MatchTracker();
+        $matchTracker->setAwayTeam($team);
+        $matchTracker->setHomeTeam($team2);
+
         $user->setUsername("matthijs");
         $user->setEmail("matthijs@gmail.com");
         $user->setPassword('$argon2id$v=19$m=65536,t=4,p=1$KRo3zJhvdVincbY6PSktkA$WC1UQdcanV2UKHtHejXsHiWMPmILLhqg0+8krlL17zU');
@@ -40,7 +45,7 @@ class DataFixtures extends Fixture
 
         $match->setLoser($team);
         $match->setWinner($team2);
-        $match->setTie(false);
+        $match->setTie(false, $matchTracker);
 
         $tournament->setName("taloes big football");
         $tournament->setType("ice-skating");

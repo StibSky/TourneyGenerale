@@ -9,7 +9,6 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
     {% for user in users %}
         <p>
             <a href="{{ path('add_user', {user:user.id}) }}">{{ user.username }}</a>

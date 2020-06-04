@@ -19,7 +19,6 @@ class HomePageController extends AbstractController
     {
         $tournaments = $em->getRepository(Tournament::class)->findAll();
         return $this->render('home_page/index.html.twig', [
-            'controller_name' => 'HomePageController',
             'tournaments' => $tournaments,
         ]);
     }

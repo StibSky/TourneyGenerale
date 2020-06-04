@@ -16,11 +16,12 @@ class TeamHomepageController extends AbstractController
     public function index()
     {
         $users = $this->getDoctrine()->getRepository(User::class)->findBy(
-            ['team' => null]
+            [
+                'team' => null,
+            ]
         );
 
         return $this->render('team_homepage/index.html.twig', [
-            'controller_name' => 'TeamHomepageController',
             'users' => $users,
         ]);
     }

@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomePageController!{% endblock %}
+
 
 {% block body %}
+    <p>Do you want to create a team? <a href="{{ path('team') }}"><button>Click here</button></a></p>
+    <p>Do you already have a team <a href="{{ path('team_homepage') }}"><button>Click here</button></a></p>
     {% for tournament in tournaments %}
         {{ tournament.name }}<br>
     {% endfor %}
