@@ -35,7 +35,16 @@ class WinnerController extends AbstractController
             $winningTeam->setScore($winningTeam->getScore() + $POINTSPERWIN);
             $em->persist($winningTeam);
         }
+        if ($MatchTracker->getRound() != 0){
 
+            $nextMatchTracker = new MatchTracker();
+            $nextMatchTracker->setHomeTeam($winningTeam);
+            $nextMatchTracker->setAwayTeam($winningTeam);
+            $nextMatchTracker->setIsMatchPlayed(0);
+            $nextMatchTracker->setRound(2);
+            $em->persist($nextMatchTracker);
+
+        }
         if ($winnerTeam == "tie") {
             $playedMatch->setTie(true);
             $MatchTracker->getAwayTeam()->setScore($MatchTracker->getAwayTeam()->getScore() + $POINTSPERTIE);
@@ -46,12 +55,14 @@ class WinnerController extends AbstractController
 
 
         } elseif ($MatchTracker->getHomeTeam()->getTeamName() == $winnerTeam) {
+
             $losingTeam = $this->getDoctrine()->getRepository(Team::class)
                 ->findOneBy(['teamName' => $MatchTracker->getAwayTeam()->getTeamName()]);
             $playedMatch->setLoser($losingTeam);
             $em->persist($losingTeam);
 
         } else {
+
             $losingTeam = $this->getDoctrine()->getRepository(Team::class)
                 ->findOneBy(['teamName' => $MatchTracker->getHomeTeam()->getTeamName()]);
             $playedMatch->setLoser($losingTeam);

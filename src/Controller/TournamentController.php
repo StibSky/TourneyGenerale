@@ -27,7 +27,8 @@ class TournamentController extends AbstractController
 
         return $this->render('tournament/index.html.twig', [
             'numberofMatchesinRound' => $numberOfMatchesInRound,
-            'allRounds' => $this->getDoctrine()->getRepository(MatchTracker::class)->findBy(['IsMatchPlayed' => false]),
+            'allRounds' => $this->getDoctrine()->getRepository(MatchTracker::class)->findBy(['IsMatchPlayed' => false, 'round' => 0]),
+            'firstRound' => $this->getDoctrine()->getRepository(MatchTracker::class)->findBy(['round' => 1])
         ]);
     }
 

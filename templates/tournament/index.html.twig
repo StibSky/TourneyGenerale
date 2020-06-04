@@ -43,6 +43,30 @@
                 {% endfor %}
             </table>
         </article>
+    </div>
+    <p>-----------------------------------------</p>
+    <h2>First Bracket Round</h2>
+    <div>
+        <table>
+            {% for Match in firstRound %}
+                <tr>
+                    <td>
+                        {{ Match.AwayTeam.TeamName }}
+                        <br>
+                        <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                            <button name="winner" value="{{ Match.AwayTeam.TeamName }}">This team won</button>
+                        </form>
+                    </td>
+                    <td> vs</td>
+                    <td> {{ Match.HomeTeam.TeamName }}
+                        <br>
+                        <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                            <button name="winner" value="{{ Match.HomeTeam.TeamName }}">This team won</button>
+                        </form>
+                    </td>
 
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}
