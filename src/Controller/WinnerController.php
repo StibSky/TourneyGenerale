@@ -27,7 +27,6 @@ class WinnerController extends AbstractController
         $winnerTeam = $_POST['winner'] ?? "tie";
 
 
-
         if (!isset($_POST['tie'])){
             $winningTeam = $this->getDoctrine()->getRepository(Team::class)
                 ->findOneBy(['teamName' => $winnerTeam]);

@@ -56,16 +56,24 @@
                         <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
                             <button name="winner" value="{{ Match.AwayTeam.TeamName }}">This team won</button>
                         </form>
+                        {% if loop.index % 2 == 0 %}
+                            <p>/////////////////////////////////</p>
+                        {% endif %}
                     </td>
-                    <td> vs</td>
+                    <td> vs <br><br>{% if loop.index % 2 == 0 %}
+                            <p>/////////////////////////////////</p>
+                        {% endif %}</td>
                     <td> {{ Match.HomeTeam.TeamName }}
                         <br>
                         <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
                             <button name="winner" value="{{ Match.HomeTeam.TeamName }}">This team won</button>
                         </form>
+                        {% if loop.index % 2 == 0 %}
+                            <p>/////////////////////////////////</p>
+                        {% endif %}
                     </td>
-
                 </tr>
+
             {% endfor %}
         </table>
     </div>
