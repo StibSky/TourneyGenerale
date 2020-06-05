@@ -45,7 +45,7 @@ class WinnerController extends AbstractController
 
         }
         if ($winnerTeam == "tie") {
-            $playedMatch->setTie(true);
+            $playedMatch->setTie(true, $MatchTracker);
             $MatchTracker->getAwayTeam()->setScore($MatchTracker->getAwayTeam()->getScore() + $POINTSPERTIE);
             $MatchTracker->getHomeTeam()->setScore($MatchTracker->getHomeTeam()->getScore() + $POINTSPERTIE);
 

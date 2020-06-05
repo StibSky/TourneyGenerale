@@ -24,6 +24,9 @@ class TournamentController extends AbstractController
         foreach ($allteams as $team)  {
             $team->getId();
         }
+        $secondRoundTeams = $this->getDoctrine()->getRepository(MatchTracker::class)
+            ->findBy(['round' => 1]);
+
 
 
         return $this->render('tournament/index.html.twig', [
