@@ -6,12 +6,51 @@
 
     <div class="example-wrapper">
         <b>Teamname : Score</b><br>
-        {% for Team in topTeams %}
+        {% for Team in ladder %}
             {{ Team.teamName }} : {{ Team.score }} <br>
         {% endfor %}
-        {% for match in bracket %}
-            <p>{{ match.homeTeam.teamName }} vs {{ match.awayTeam.teamName }}</p>
-        {% endfor %}
+        <form action={{ path('roundRobin') }}>
+            <button>Round Robin</button>
+        </form>
 
+    </div>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+    </style>
+
+    <div class="example-wrapper">
+
+        <article>
+            <table>
+                {% for Match in allRounds %}
+                    <tr>
+                        <td>
+                            {{ Match.AwayTeam.TeamName }}
+                            <br>
+                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                                <button name="winner" value="{{ Match.AwayTeam.TeamName }}">This team won</button>
+                            </form>
+                        </td>
+                        <td> vs</td>
+                        <td> {{ Match.HomeTeam.TeamName }}
+                            <br>
+                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                                <button name="winner" value="{{ Match.HomeTeam.TeamName }}">This team won</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                                <button name="tie" value="tie">This match was a tie</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </article>
     </div>
 {% endblock %}

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Match;
 use App\Entity\MatchTracker;
+use App\Entity\Team;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,17 +13,10 @@ class LadderController extends AbstractController
     /**
      * @Route("/ladder", name="ladder")
      */
-
     public function index()
     {
-        //TODO can be array
-        $CUT64 = 64;
-        $CUT32 = 32;
-        $CUT16 = 16;
-        $CUT8 = 8;
-        $CUT4 = 4;
-        $CUT2 = 2;
         $topArray = [];
+        $cuts = [64, 32, 16, 8, 4, 2];
 
         $em = $this->getDoctrine()->getManager();
 
@@ -30,29 +25,21 @@ class LadderController extends AbstractController
 
         $ladder = $em->getRepository(\App\Entity\Team::class)->findBy(array(), array('score' => 'ASC'));
 
-        switch (true) {
-            case ($numberOfTeams >= $CUT64):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT64);
+        foreach ($cuts as $cut) {
+            if ($numberOfTeams >= $cut) {
+                $topArray = array_slice($ladder, (count($ladder)) - $cut);
                 break;
-            case ($numberOfTeams >= $CUT32):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT32);
-                break;
-            case ($numberOfTeams >= $CUT16):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT16);
-                break;
-            case ($numberOfTeams >= $CUT8):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT8);
-                break;
-            case ($numberOfTeams >= $CUT4):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT4);
-                break;
-            case ($numberOfTeams >= $CUT2):
-                $topArray = array_slice($ladder, (count($ladder)) - $CUT2);
-                break;
+            }
         }
+        $numberOfRound0 = count($this->getDoctrine()->getRepository(MatchTracker::class)
+            ->findBy(['round' => 0]));
+        $numberOfPlayed0 = count($this->getDoctrine()->getRepository(MatchTracker::class)
+            ->findBy(['round' => 0, 'IsMatchPlayed' => 1]));
 
-        if (!$this->getDoctrine()->getRepository(MatchTracker::class)
-            ->findOneBy(['round' => 1])) {
+        if (
+            $numberOfRound0 == $numberOfPlayed0 && $numberOfPlayed0 != 0
+            && !$this->getDoctrine()->getRepository(MatchTracker::class)->findOneBy(['round' => 1])
+        ) {
             $bracketArray = $topArray;
             $firstHalfBracket = array_splice($bracketArray, (count($topArray) / 2));
             $secondHalfBracket = $bracketArray;
@@ -71,10 +58,74 @@ class LadderController extends AbstractController
 
 
         return $this->render('ladder/index.html.twig', [
-            'ladder' => $ladder,
+            'allRounds' => $this->getDoctrine()->getRepository(MatchTracker::class)->findBy(['IsMatchPlayed' => false, 'round' => 0]),
+            'ladder' => array_reverse($ladder),
             'topTeams' => array_reverse($topArray),
             'bracket' => $this->getDoctrine()->getRepository(MatchTracker::class)
                 ->findBy(['round' => 1])
         ]);
+    }
+
+    /**
+     * @Route("/startRoundRobin", name="roundRobin")
+     */
+
+    public function roundRobin()
+    {
+        //so this is our problem
+
+        if (count($this->getDoctrine()->getRepository(MatchTracker::class)->findAll()) !== 0) {
+            return $this->redirectToRoute('tournament');
+        }
+
+        //To Do:
+        //Figure out what to do with faketeam in the DB if a new team joins and we have even numbers again
+        //
+
+        $allteams = $this->getDoctrine()->getRepository(Team::class)->findAll();
+        $matchTracker = new MatchTracker();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if (count($allteams) % 2 != 0) {
+            $fakeTeam = new Team();
+            $fakeTeam->setTeamName("You have a bye");
+            array_push($allteams, $fakeTeam);
+            $entityManager->persist($fakeTeam);
+        }
+
+        $away = array_splice($allteams, (count($allteams) / 2));
+        $home = $allteams;
+
+
+        for ($i = 0; $i < count($home) + count($away) - 1; $i++) {
+            for ($j = 0; $j < count($home); $j++) {
+                $newMatchTracker = new MatchTracker();
+                $newMatchTracker->setRound(0);
+                $newMatchTracker->setAwayTeam($away[$j]);
+                $newMatchTracker->setHomeTeam($home[$j]);
+                if ($newMatchTracker->getAwayTeam()->getTeamName() == "You have a bye") {
+                    $match = new Match();
+                    $match->setWinner($newMatchTracker->getHomeTeam());
+                    $newMatchTracker->setIsMatchPlayed(1);
+                    $entityManager->persist($match);
+                } elseif ($newMatchTracker->getHomeTeam()->getTeamName() == "You have a bye") {
+                    $match = new Match();
+                    $match->setWinner($newMatchTracker->getAwayTeam());
+                    $newMatchTracker->setIsMatchPlayed(1);
+                    $entityManager->persist($match);
+                } else {
+                    $newMatchTracker->setIsMatchPlayed(0);
+                }
+                $entityManager->persist($newMatchTracker);
+            }
+            if (count($home) + count($away) - 1 > 2) {
+                $splicedHomeArray = array_splice($home, 1, 1);
+                array_unshift($away, array_shift($splicedHomeArray));
+                array_push($home, array_pop($away));
+            }
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('ladder');
     }
 }

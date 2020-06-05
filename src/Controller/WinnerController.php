@@ -48,8 +48,7 @@ class WinnerController extends AbstractController
             $playedMatch->setTie(true);
             $MatchTracker->getAwayTeam()->setScore($MatchTracker->getAwayTeam()->getScore() + $POINTSPERTIE);
             $MatchTracker->getHomeTeam()->setScore($MatchTracker->getHomeTeam()->getScore() + $POINTSPERTIE);
-            $em->persist($MatchTracker->getAwayTeam());
-            $em->persist($MatchTracker->getHomeTeam());
+
 
 
 
@@ -72,6 +71,10 @@ class WinnerController extends AbstractController
         //TODO: find way to identify loser
         $em->persist($playedMatch);
         $em->flush();
-        return $this->redirectToRoute('tournament');
+        if ($MatchTracker->getRound() == 0) {
+            return $this->redirectToRoute('ladder');
+        } else {
+            return $this->redirectToRoute('tournament');
+        }
     }
 }

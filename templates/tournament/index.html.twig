@@ -11,40 +11,8 @@
 
     </style>
 
-    <div class="example-wrapper">
 
-        <article>
-            <form action={{ path('roundRobin') }}>
-                <button>Round Robin</button>
-            </form>
-            <table>
-                {% for Match in allRounds %}
-                    <tr>
-                        <td>
-                            {{ Match.AwayTeam.TeamName }}
-                            <br>
-                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
-                                <button name="winner" value="{{ Match.AwayTeam.TeamName }}">This team won</button>
-                            </form>
-                        </td>
-                        <td> vs</td>
-                        <td> {{ Match.HomeTeam.TeamName }}
-                            <br>
-                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
-                                <button name="winner" value="{{ Match.HomeTeam.TeamName }}">This team won</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
-                                <button name="tie" value="tie">This match was a tie</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </article>
-    </div>
-    <p>-----------------------------------------</p>
+
     <h2>First Bracket Round</h2>
     <div>
         <table>
@@ -62,6 +30,39 @@
                     </td>
                     <td> vs <br><br>{% if loop.index % 2 == 0 %}
                             <p>/////////////////////////////////</p>
+                        {% endif %}</td>
+                    <td> {{ Match.HomeTeam.TeamName }}
+                        <br>
+                        <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                            <button name="winner" value="{{ Match.HomeTeam.TeamName }}">This team won</button>
+                        </form>
+                        {% if loop.index % 2 == 0 %}
+                            <p>/////////////////////////////////</p>
+                        {% endif %}
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+    <p>-----------------------------------------</p>
+    <h2>Second Bracket Round</h2>
+    <div>
+        <table>
+            {% for Match in roundTwo %}
+                <tr>
+                    <td>
+                        {{ Match.AwayTeam.TeamName }}
+                        <br>
+                        <form method = "post" action="{{ path('winner', {MatchTracker:Match.id}) }}">
+                            <button name="winner" value="{{ Match.AwayTeam.TeamName }}">This team won</button>
+                        </form>
+                        {% if loop.index % 2 == 0 %}
+                            <p>/////////////////////////////////</p>
+                        {% endif %}
+                    </td>
+                    <td> vs <br><br>{% if loop.index % 2 == 0 %}
+                        <p>/////////////////////////////////</p>
                         {% endif %}</td>
                     <td> {{ Match.HomeTeam.TeamName }}
                         <br>
